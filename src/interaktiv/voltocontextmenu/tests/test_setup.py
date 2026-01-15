@@ -1,0 +1,59 @@
+import unittest
+
+import plone.api as api
+# noinspection PyUnresolvedReferences
+from Products.CMFPlone.utils import get_installer
+from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
+from interaktiv.voltocontextmenu.interfaces import IInteraktivVoltoContextmenuLayer
+from interaktiv.voltocontextmenu.registry.contextmenu import IContextmenuSchema
+from interaktiv.voltocontextmenu.testing import INTERAKTIV_VOLTOCONTEXTMENU_INTEGRATION_TESTING
+from plone.browserlayer import utils
+from plone.dexterity.fti import DexterityFTI
+from plone.dexterity.interfaces import IDexterityFTI
+from zope.component import getUtility
+from zope.interface.interfaces import ComponentLookupError
+
+
+class TestSetup(unittest.TestCase):
+    layer = INTERAKTIV_VOLTOCONTEXTMENU_INTEGRATION_TESTING
+    product_name = 'interaktiv.voltocontextmenu'
+
+    def test_product_installed(self):
+        # setup
+        installer = get_installer(self.layer["portal"], self.layer["request"])
+
+        # do it
+        result = installer.is_product_installed(self.product_name)
+
+        # postcondition
+        self.assertTrue(result)
+
+    def test_browserlayer_installed(self):
+        # postcondition
+        self.assertIn(IInteraktivVoltoContextmenuLayer, utils.registered_layers())
+
+    def test_contextmenu_behavior_set(self):
+        # setup
+        contextmenu_behavior = IContextmenuBehavior.__identifier__
+
+        portal_types_tool = api.portal.get_tool('portal_types')
+        portal_types = portal_types_tool.listContentTypes()
+
+        # postcondition
+        for portal_type in portal_types:
+            try:
+                fti: DexterityFTI = getUtility(IDexterityFTI, name=portal_type)
+            except ComponentLookupError:
+                continue
+
+            self.assertIn(contextmenu_behavior, fti.behaviors)
+
+    def test_contextmenu_registry_record_created(self):
+        default_shown_types = api.portal.get_registry_record(
+            name='default_portal_types',
+            interface=IContextmenuSchema,
+            default=['Document']
+        )
+
+        expected_types = ['Document']
+        self.assertListEqual(default_shown_types, expected_types)

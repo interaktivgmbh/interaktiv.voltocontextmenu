@@ -1,0 +1,33 @@
+<configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+        xmlns:i18n="http://namespaces.zope.org/i18n"
+        i18n_domain="interaktiv.voltocontextmenu">
+
+    <include package="plone.restapi" file="meta.zcml"/>
+
+    <i18n:registerTranslations directory="locales"/>
+    <include package=".behaviors"/>
+    <include package=".controlpanels"/>
+    <include package=".indexers"/>
+    <include package=".services"/>
+
+    <genericsetup:registerProfile
+            name="default"
+            title="Interaktiv Volto Contextmenu"
+            description="Installs the interaktiv.voltocontextmenu package."
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            directory="profiles/default"
+            post_handler=".setuphandlers.post_install"
+    />
+
+    <genericsetup:registerProfile
+            name="uninstall"
+            title="Interaktiv Volto Contextmenu"
+            description="Uninstalls the interaktiv.voltocontextmenu package."
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            directory="profiles/uninstall"
+            post_handler=".setuphandlers.post_uninstall"
+    />
+
+</configure>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        i18n:domain="interaktiv.voltocontextmenu"
+        purge="False">
+
+    <!-- Contextmenu Settings -->
+    <configlet
+        title="trans_label_controlpanel_contextmenu_settings"
+        action_id="contextmenu-settings"
+        appId="interaktiv.voltocontextmenu"
+        category="Products"
+        condition_expr=""
+        icon_expr="string:robot"
+        url_expr="string:${portal_url}/@@contextmenu-settings"
+        visible="True"
+        i18n:attributes="title">
+        <permission>Manage portal</permission>
+    </configlet>
+
+</object>

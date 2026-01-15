@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="interaktiv.voltocontextmenu">
+
+    <include package="Products.CMFCore" file="permissions.zcml" />
+
+    <!-- Controlpanel 'Contextmenu' Settings -->
+    <browser:page
+        name="contextmenu-settings"
+        for="plone.base.interfaces.IPloneSiteRoot"
+        class="interaktiv.voltocontextmenu.controlpanels.contextmenu.ContextmenuSettingsView"
+        permission="cmf.ManagePortal"
+        layer="interaktiv.voltocontextmenu.interfaces.IInteraktivVoltoContextmenuLayer"
+    />
+
+    <adapter
+      factory="interaktiv.voltocontextmenu.controlpanels.contextmenu.ContextmenuSettingsConfigletPanel"
+      name="contextmenu-settings"
+    />
+
+</configure>

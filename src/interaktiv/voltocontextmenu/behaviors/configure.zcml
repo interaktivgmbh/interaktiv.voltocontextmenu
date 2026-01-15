@@ -1,0 +1,18 @@
+<configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:plone="http://namespaces.plone.org/plone"
+        i18n_domain="interaktiv.voltocontextmenu">
+
+    <include package="plone.behavior" file="meta.zcml"/>
+
+    <plone:behavior
+            title="Contextmenu Behavior"
+            name="interaktiv.voltocontextmenu"
+            description="Adds Contextmenu Behavior"
+            for="plone.dexterity.interfaces.IDexterityContent"
+            factory="interaktiv.voltocontextmenu.behaviors.contextmenu.ContextmenuBehavior"
+            provides="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehavior"
+            marker="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehavior"
+    />
+
+</configure>

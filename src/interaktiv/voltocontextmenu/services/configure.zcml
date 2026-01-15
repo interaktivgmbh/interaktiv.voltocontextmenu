@@ -1,0 +1,12 @@
+<configure>
+
+    <!-- Include for CMF Permissions -->
+    <include package="Products.CMFCore" file="permissions.zcml"/>
+
+    <!-- Include for plone:service directive -->
+    <include package="plone.rest" file="meta.zcml"/>
+
+    <!-- Include packages -->
+    <include package=".contextmenu"/>
+
+</configure>
