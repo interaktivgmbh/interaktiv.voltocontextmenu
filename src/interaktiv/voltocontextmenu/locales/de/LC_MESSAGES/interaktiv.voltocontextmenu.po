@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-12-11 10:56+0000\n"
+"POT-Creation-Date: 2026-01-15 09:58+0000\n"
 "PO-Revision-Date: 2025-12-05 11:00+0000\n"
 "Last-Translator: Interaktiv <hello@interaktiv.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -13,3 +13,64 @@ msgstr ""
 "Language-Name: German\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: interaktiv.voltocontextmenu\n"
+
+#: ../behaviors/configure.zcml:16
+msgid "Adds Contextmenu Behavior"
+msgstr ""
+
+#: ../behaviors/configure.zcml:16
+msgid "Contextmenu Behavior"
+msgstr ""
+
+#: ../configure.zcml:22
+msgid "Installs the interaktiv.voltocontextmenu package."
+msgstr ""
+
+#: ../configure.zcml:22
+msgid "Interaktiv Volto Contextmenu"
+msgstr ""
+
+#: ../configure.zcml:31
+msgid "Uninstalls the interaktiv.voltocontextmenu package."
+msgstr ""
+
+#. Default: "Types that are shown in Contextmenu by Default."
+#: ../registry/contextmenu.py:9
+msgid "help_default_portal_types"
+msgstr "Contenttypen die per Default im Contextmenu angezeigt werden."
+
+#. Default: "If selected, the Contextmenu will be rendered for this page"
+#: ../behaviors/contextmenu.py:20
+msgid "help_show_contextmenu"
+msgstr "Wenn ausgewählt wird das Contextmenü für diese Seite angezeigt."
+
+#. Default: "If selected, the item will be listed in Contextmenus"
+#: ../behaviors/contextmenu.py:30
+msgid "help_show_in_contextmenu"
+msgstr "Wenn ausgewählt, wird dieser Inhalt im Contextmenu aufgelistet."
+
+#. Default: "Contextmenu"
+#: ../behaviors/contextmenu.py:14
+msgid "label_contextmenu_fieldset"
+msgstr ""
+
+#. Default: "Contextmenu Default Portal Types"
+#: ../registry/contextmenu.py:8
+msgid "label_default_portal_types"
+msgstr "Contextmenu Default Contenttypen"
+
+#. Default: "Show Contextmenu"
+#: ../behaviors/contextmenu.py:19
+msgid "label_show_contextmenu"
+msgstr "Contextmenu anzeigen."
+
+#. Default: "Show In Contextmenu"
+#: ../behaviors/contextmenu.py:29
+msgid "label_show_in_contextmenu"
+msgstr "Inhalt im Contextmenu anzeigen."
+
+#. Default: "Contextmenu Settings"
+#: ../controlpanels/contextmenu.py:13
+#: ../profiles/default/controlpanel.xml
+msgid "trans_label_controlpanel_contextmenu_settings"
+msgstr "Contextmenu Einstellungen"

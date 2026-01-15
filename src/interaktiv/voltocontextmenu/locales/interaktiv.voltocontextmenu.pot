@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-12-11 10:56+0000\n"
+"POT-Creation-Date: 2026-01-15 09:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,3 +16,64 @@ msgstr ""
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: interaktiv.voltocontextmenu\n"
+
+#: ../behaviors/configure.zcml:16
+msgid "Adds Contextmenu Behavior"
+msgstr ""
+
+#: ../behaviors/configure.zcml:16
+msgid "Contextmenu Behavior"
+msgstr ""
+
+#: ../configure.zcml:22
+msgid "Installs the interaktiv.voltocontextmenu package."
+msgstr ""
+
+#: ../configure.zcml:22
+msgid "Interaktiv Volto Contextmenu"
+msgstr ""
+
+#: ../configure.zcml:31
+msgid "Uninstalls the interaktiv.voltocontextmenu package."
+msgstr ""
+
+#. Default: "Types that are shown in Contextmenu by Default."
+#: ../registry/contextmenu.py:9
+msgid "help_default_portal_types"
+msgstr ""
+
+#. Default: "If selected, the Contextmenu will be rendered for this page"
+#: ../behaviors/contextmenu.py:20
+msgid "help_show_contextmenu"
+msgstr ""
+
+#. Default: "If selected, the item will be listed in Contextmenus"
+#: ../behaviors/contextmenu.py:30
+msgid "help_show_in_contextmenu"
+msgstr ""
+
+#. Default: "Contextmenu"
+#: ../behaviors/contextmenu.py:14
+msgid "label_contextmenu_fieldset"
+msgstr ""
+
+#. Default: "Contextmenu Default Portal Types"
+#: ../registry/contextmenu.py:8
+msgid "label_default_portal_types"
+msgstr ""
+
+#. Default: "Show Contextmenu"
+#: ../behaviors/contextmenu.py:19
+msgid "label_show_contextmenu"
+msgstr ""
+
+#. Default: "Show In Contextmenu"
+#: ../behaviors/contextmenu.py:29
+msgid "label_show_in_contextmenu"
+msgstr ""
+
+#. Default: "Contextmenu Settings"
+#: ../controlpanels/contextmenu.py:13
+#: ../profiles/default/controlpanel.xml
+msgid "trans_label_controlpanel_contextmenu_settings"
+msgstr ""
