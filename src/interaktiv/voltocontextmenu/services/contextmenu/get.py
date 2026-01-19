@@ -1,8 +1,9 @@
-from typing import TypedDict, List, Dict
+from typing import TypedDict
 
 import plone.api as api
-from Acquisition import aq_parent, aq_base
+from Acquisition import aq_base, aq_parent
 from plone.app.contentlisting.catalog import CatalogContentListingObject
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.dexterity.content import DexterityContent
 from plone.restapi.services import Service
 
@@ -18,7 +19,7 @@ class ContextmenuItemData(TypedDict):
 
 
 class ContentmenuData(TypedDict):
-    items: List[ContextmenuItemData]
+    items: list[ContextmenuItemData]
 
 
 class ContextmenuGet(Service):
@@ -26,31 +27,29 @@ class ContextmenuGet(Service):
 
     def reply(self) -> ContextmenuItemData:
         show_contextmenu = self._show_contextmenu()
-
-        print('### ContextmenuGet', self.context, show_contextmenu) 
-
-
         if not show_contextmenu:
-            return dict()
+            return {}
 
         contextmenu = self._get_context_menu()
         return contextmenu
 
     def _show_contextmenu(self):
+        if INavigationRoot.providedBy(self.context):
+            return False
+
         context_base = aq_base(self.context)
-        context_show_contextmenu = getattr(context_base, 'show_contextmenu', False)
+        context_show_contextmenu = getattr(context_base, "show_contextmenu", False)
         if not context_show_contextmenu:
             return False
 
         return True
 
     def _get_context_menu(self) -> ContextmenuItemData:
-        # TODO handle ROOT objects (?)
         parent = aq_parent(self.context)
         context = self.context
 
         contextmenu = {
-            'items': self._get_context_menu_items(parent, context),
+            "items": self._get_context_menu_items(parent, context),
         }
 
         return contextmenu
@@ -58,32 +57,29 @@ class ContextmenuGet(Service):
     @staticmethod
     def _get_item_data(brain: CatalogContentListingObject) -> ContextmenuItemData:
         data = {
-            'uid': brain.UID,
-            'id': brain.id,
-            'title': brain.Title,
-            'description': brain.Description,
-            'portal_type': brain.portal_type,
-            'url': brain.getURL(),
-            'is_active': False,
-            'children': []
+            "uid": brain.UID,
+            "id": brain.id,
+            "title": brain.Title,
+            "description": brain.Description,
+            "portal_type": brain.portal_type,
+            "url": brain.getURL(),
+            "is_active": False,
+            "children": [],
         }
         return data
 
     @staticmethod
-    def _get_query(query_context: DexterityContent) -> Dict[str, any]:
+    def _get_query(query_context: DexterityContent) -> dict[str, any]:
         query = {
-            'sort_on': 'getObjPositionInParent',
-            'path': {
-                'query': '/'.join(query_context.getPhysicalPath()),
-                'depth': 1
-            },
-            'show_in_contextmenu': True
+            "sort_on": "getObjPositionInParent",
+            "path": {"query": "/".join(query_context.getPhysicalPath()), "depth": 1},
+            "show_in_contextmenu": True,
         }
         return query
 
-    def _get_children(self, context: DexterityContent) -> List[ContextmenuItemData]:
+    def _get_children(self, context: DexterityContent) -> list[ContextmenuItemData]:
         children = []
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool("portal_catalog")
 
         query = self._get_query(context)
 
@@ -92,10 +88,11 @@ class ContextmenuGet(Service):
 
         return children
 
-    def _get_context_menu_items(self, parent: DexterityContent, context: DexterityContent
-                                ) -> List[ContextmenuItemData]:
+    def _get_context_menu_items(
+        self, parent: DexterityContent, context: DexterityContent
+    ) -> list[ContextmenuItemData]:
         items = []
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool("portal_catalog")
         context_uid = context.UID()
 
         query = self._get_query(parent)
@@ -103,8 +100,8 @@ class ContextmenuGet(Service):
             item_data = self._get_item_data(brain)
 
             if brain.UID == context_uid:
-                item_data['is_active'] = True
-                item_data['children'] = self._get_children(context)
+                item_data["is_active"] = True
+                item_data["children"] = self._get_children(context)
 
             items.append(item_data)
 
