@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Any, TypedDict
 
 import plone.api as api
 from Acquisition import aq_base, aq_parent
@@ -10,12 +10,13 @@ from plone.restapi.services import Service
 
 class ContextmenuItemData(TypedDict):
     uid: str
+    id: str
     title: str
     description: str
     portal_type: str
     url: str
     is_active: bool
-    children: list
+    children: list["ContextmenuItemData"]
 
 
 class ContentmenuData(TypedDict):
@@ -25,7 +26,7 @@ class ContentmenuData(TypedDict):
 class ContextmenuGet(Service):
     """Returns a content menu."""
 
-    def reply(self) -> ContextmenuItemData:
+    def reply(self) -> ContentmenuData | dict:
         show_contextmenu = self._show_contextmenu()
         if not show_contextmenu:
             return {}
@@ -33,7 +34,7 @@ class ContextmenuGet(Service):
         contextmenu = self._get_context_menu()
         return contextmenu
 
-    def _show_contextmenu(self):
+    def _show_contextmenu(self) -> bool:
         if INavigationRoot.providedBy(self.context):
             return False
 
@@ -44,7 +45,7 @@ class ContextmenuGet(Service):
 
         return True
 
-    def _get_context_menu(self) -> ContextmenuItemData:
+    def _get_context_menu(self) -> ContentmenuData:
         parent = aq_parent(self.context)
         context = self.context
 
@@ -69,7 +70,7 @@ class ContextmenuGet(Service):
         return data
 
     @staticmethod
-    def _get_query(query_context: DexterityContent) -> dict[str, any]:
+    def _get_query(query_context: DexterityContent) -> dict[str, Any]:
         query = {
             "sort_on": "getObjPositionInParent",
             "path": {"query": "/".join(query_context.getPhysicalPath()), "depth": 1},
