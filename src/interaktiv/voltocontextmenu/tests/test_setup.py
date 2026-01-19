@@ -1,22 +1,26 @@
 import unittest
 
 import plone.api as api
-# noinspection PyUnresolvedReferences
-from Products.CMFPlone.utils import get_installer
-from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
-from interaktiv.voltocontextmenu.interfaces import IInteraktivVoltoContextmenuLayer
-from interaktiv.voltocontextmenu.registry.contextmenu import IContextmenuSchema
-from interaktiv.voltocontextmenu.testing import INTERAKTIV_VOLTOCONTEXTMENU_INTEGRATION_TESTING
 from plone.browserlayer import utils
 from plone.dexterity.fti import DexterityFTI
 from plone.dexterity.interfaces import IDexterityFTI
+
+# noinspection PyUnresolvedReferences
+from Products.CMFPlone.utils import get_installer
 from zope.component import getUtility
 from zope.interface.interfaces import ComponentLookupError
+
+from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
+from interaktiv.voltocontextmenu.interfaces import IInteraktivVoltoContextmenuLayer
+from interaktiv.voltocontextmenu.registry.contextmenu import IContextmenuSchema
+from interaktiv.voltocontextmenu.testing import (
+    INTERAKTIV_VOLTOCONTEXTMENU_INTEGRATION_TESTING,
+)
 
 
 class TestSetup(unittest.TestCase):
     layer = INTERAKTIV_VOLTOCONTEXTMENU_INTEGRATION_TESTING
-    product_name = 'interaktiv.voltocontextmenu'
+    product_name = "interaktiv.voltocontextmenu"
 
     def test_product_installed(self):
         # setup
@@ -36,7 +40,7 @@ class TestSetup(unittest.TestCase):
         # setup
         contextmenu_behavior = IContextmenuBehavior.__identifier__
 
-        portal_types_tool = api.portal.get_tool('portal_types')
+        portal_types_tool = api.portal.get_tool("portal_types")
         portal_types = portal_types_tool.listContentTypes()
 
         # postcondition
@@ -50,10 +54,8 @@ class TestSetup(unittest.TestCase):
 
     def test_contextmenu_registry_record_created(self):
         default_shown_types = api.portal.get_registry_record(
-            name='default_portal_types',
-            interface=IContextmenuSchema,
-            default=['Document']
+            name="default_portal_types", interface=IContextmenuSchema
         )
 
-        expected_types = ['Document']
+        expected_types = ["Document"]
         self.assertListEqual(default_shown_types, expected_types)

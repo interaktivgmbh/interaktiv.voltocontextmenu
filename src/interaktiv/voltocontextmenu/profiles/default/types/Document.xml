@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<object name="Document" meta_type="Dexterity FTI">
-    <property name="behaviors" purge="false">
-        <element value="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehavior"/>
-    </property>
-</object>
