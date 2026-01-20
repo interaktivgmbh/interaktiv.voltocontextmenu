@@ -1,40 +1,40 @@
 import unittest
 
 import plone.api as api
-from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
-from interaktiv.voltocontextmenu.services.contextmenu.get import ContextmenuGet
-from interaktiv.voltocontextmenu.testing import INTERAKTIV_VOLTOCONTEXTMENU_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID, setRoles
-from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.dexterity.fti import DexterityFTI
-from plone.dexterity.interfaces import IDexterityFTI
-from zope.component import getUtility
-from interaktiv.voltocontextmenu.indexers.show_in_contextmenu import ShowInContextmenuIndexer
+
+from interaktiv.voltocontextmenu.indexers.show_in_contextmenu import (
+    ShowInContextmenuIndexer,
+)
 from interaktiv.voltocontextmenu.registry.contextmenu import IContextmenuSchema
+from interaktiv.voltocontextmenu.setuphandlers import add_contextmenu_behavior
+from interaktiv.voltocontextmenu.testing import (
+    INTERAKTIV_VOLTOCONTEXTMENU_FUNCTIONAL_TESTING,
+)
 
 
 class TestShowInContextmenuIndexer(unittest.TestCase):
     layer = INTERAKTIV_VOLTOCONTEXTMENU_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.app = self.layer['app']
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
-        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Site Administrator'])
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager", "Site Administrator"])
 
     def test_indexer_show_in_contextmenu__default(self):
         # setup
         document_a = api.content.create(
             container=self.portal,
-            type='Document',
-            id='document_a',
-            title='Document A',
-            description='a Document',
+            type="Document",
+            id="document_a",
+            title="Document A",
+            description="a Document",
         )
         indexer = ShowInContextmenuIndexer(document_a)
 
         # do it
-        result  =  indexer.callable(document_a)
+        result = indexer.callable(document_a)
 
         # postcondition
         self.assertEqual(result, True)
@@ -43,74 +43,80 @@ class TestShowInContextmenuIndexer(unittest.TestCase):
         # setup
         document_a = api.content.create(
             container=self.portal,
-            type='Document',
-            id='document_a',
-            title='Document A',
-            description='a Document',
-            show_in_contextmenu=False
+            type="Document",
+            id="document_a",
+            title="Document A",
+            description="a Document",
+            show_in_contextmenu=False,
         )
         indexer = ShowInContextmenuIndexer(document_a)
 
         # do it
-        result  =  indexer.callable(document_a)
+        result = indexer.callable(document_a)
 
         # postcondition
         self.assertEqual(result, False)
 
     def test_indexer_show_in_contextmenu__not_default(self):
         # setup
+        add_contextmenu_behavior(["Image"])
+
         image_a = api.content.create(
             container=self.portal,
-            type='Image',
-            id='image_a',
-            title='Image A',
-            description='an Image'
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
         )
         indexer = ShowInContextmenuIndexer(image_a)
 
         # do it
-        result  =  indexer.callable(image_a)
+        result = indexer.callable(image_a)
 
         # postcondition
         self.assertEqual(result, False)
 
     def test_indexer_show_in_contextmenu__not_default__in_contextmenu(self):
         # setup
+        add_contextmenu_behavior(["Image"])
+
         image_a = api.content.create(
             container=self.portal,
-            type='Image',
-            id='image_a',
-            title='Image A',
-            description='an Image',
-            show_in_contextmenu=True
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
+            show_in_contextmenu=True,
         )
         indexer = ShowInContextmenuIndexer(image_a)
 
         # do it
-        result  =  indexer.callable(image_a)
+        result = indexer.callable(image_a)
 
         # postcondition
         self.assertEqual(result, True)
 
     def test_indexer_show_in_contextmenu__default__registry_update(self):
         # setup
+        add_contextmenu_behavior(["Image"])
+
         api.portal.set_registry_record(
-            name='default_portal_types',
+            name="default_portal_types",
             interface=IContextmenuSchema,
-            value=['Document', 'Image']
+            value=["Document", "Image"],
         )
 
         image_a = api.content.create(
             container=self.portal,
-            type='Image',
-            id='image_a',
-            title='Image A',
-            description='an Image'
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
         )
         indexer = ShowInContextmenuIndexer(image_a)
 
         # do it
-        result  =  indexer.callable(image_a)
+        result = indexer.callable(image_a)
 
         # postcondition
         self.assertEqual(result, True)

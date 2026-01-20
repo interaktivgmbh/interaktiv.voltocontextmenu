@@ -10,6 +10,7 @@ from Products.CMFPlone.utils import get_installer
 from zope.component import getUtility
 from zope.interface.interfaces import ComponentLookupError
 
+from interaktiv.voltocontextmenu import DEFAULT_MENU_TYPES
 from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
 from interaktiv.voltocontextmenu.interfaces import IInteraktivVoltoContextmenuLayer
 from interaktiv.voltocontextmenu.registry.contextmenu import IContextmenuSchema
@@ -40,11 +41,8 @@ class TestSetup(unittest.TestCase):
         # setup
         contextmenu_behavior = IContextmenuBehavior.__identifier__
 
-        portal_types_tool = api.portal.get_tool("portal_types")
-        portal_types = portal_types_tool.listContentTypes()
-
         # postcondition
-        for portal_type in portal_types:
+        for portal_type in DEFAULT_MENU_TYPES:
             try:
                 fti: DexterityFTI = getUtility(IDexterityFTI, name=portal_type)
             except ComponentLookupError:
