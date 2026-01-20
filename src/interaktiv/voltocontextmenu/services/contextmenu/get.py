@@ -125,10 +125,14 @@ class ContextmenuGet(Service):
             return items
 
         context_position = parent.getObjectPosition(context.getId())
-        ids_before = parent_ids[:context_position]
+        ids_before = set(parent_ids[:context_position])
 
-        items_before = [item for item in items if item["id"] in ids_before]
-        items_after = [item for item in items if item["id"] not in ids_before]
+        items_before, items_after = [], []
+        for item in items:
+            if item["id"] in ids_before:
+                items_before.append(item)
+            else:
+                items_after.append(item)
 
         active_item: ContextmenuItemData = {
             "uid": context.UID(),
