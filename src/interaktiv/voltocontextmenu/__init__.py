@@ -5,4 +5,4 @@ from zope.i18nmessageid import MessageFactory
 logger = logging.getLogger("interaktiv.voltocontextmenu")
 _ = MessageFactory("interaktiv.voltocontextmenu")
 
-DEFAULT_MENU_TYPES = ["Document"]
+DEFAULT_CONTEXTMENU_TYPES = ["Document"]

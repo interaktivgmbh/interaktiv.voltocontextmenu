@@ -4,7 +4,7 @@ from plone.dexterity.interfaces import IDexterityFTI
 from zope.component import getUtility
 from zope.interface.interfaces import ComponentLookupError
 
-from interaktiv.voltocontextmenu import DEFAULT_MENU_TYPES
+from interaktiv.voltocontextmenu import DEFAULT_CONTEXTMENU_TYPES
 from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
 
 
@@ -47,7 +47,7 @@ def remove_contextmenu_behavior() -> None:
 
 # noinspection PyUnusedLocal
 def post_install(context):
-    add_contextmenu_behavior(DEFAULT_MENU_TYPES)
+    add_contextmenu_behavior(DEFAULT_CONTEXTMENU_TYPES)
 
 
 # noinspection PyUnusedLocal
