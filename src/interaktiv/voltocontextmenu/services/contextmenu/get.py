@@ -95,6 +95,7 @@ class ContextmenuGet(Service):
         items = []
         catalog = api.portal.get_tool("portal_catalog")
         context_uid = context.UID()
+        context_found = False
 
         query = self._get_query(parent)
         for brain in catalog(query):
@@ -103,7 +104,41 @@ class ContextmenuGet(Service):
             if brain.UID == context_uid:
                 item_data["is_active"] = True
                 item_data["children"] = self._get_children(context)
+                context_found = True
 
             items.append(item_data)
 
+        if not context_found:
+            items = self._insert_active_context(items, parent, context)
+
         return items
+
+    def _insert_active_context(
+        self,
+        items: list[ContextmenuItemData],
+        parent: DexterityContent,
+        context: DexterityContent,
+    ) -> list[ContextmenuItemData]:
+
+        parent_ids = parent.objectIds()
+        if context.id not in parent_ids:
+            return items
+
+        context_position = parent.getObjectPosition(context.getId())
+        ids_before = parent_ids[:context_position]
+
+        items_before = [item for item in items if item["id"] in ids_before]
+        items_after = [item for item in items if item["id"] not in ids_before]
+
+        active_item: ContextmenuItemData = {
+            "uid": context.UID(),
+            "id": context.getId(),
+            "title": context.Title(),
+            "description": context.Description(),
+            "portal_type": context.portal_type,
+            "url": context.absolute_url(),
+            "is_active": True,
+            "children": self._get_children(context),
+        }
+
+        return items_before + [active_item] + items_after

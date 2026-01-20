@@ -9,6 +9,7 @@ from zope.component import getUtility
 
 from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
 from interaktiv.voltocontextmenu.services.contextmenu.get import ContextmenuGet
+from interaktiv.voltocontextmenu.setuphandlers import add_contextmenu_behavior
 from interaktiv.voltocontextmenu.testing import (
     INTERAKTIV_VOLTOCONTEXTMENU_FUNCTIONAL_TESTING,
 )
@@ -232,6 +233,91 @@ class TestContextmenuGet(unittest.TestCase):
         }
         self.assertDictEqual(result[0], expected_data)
 
+    def test_contextmenu__insert_active_context(self):
+        # setup
+        document_a = api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document_a",
+            title="Document A",
+            description="a Document",
+        )
+        image = api.content.create(
+            container=self.portal,
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
+        )
+
+        items = [
+            {"id": document_a.id},
+            {"id": "someotherid"},
+        ]
+
+        # do it
+        result = self.service._insert_active_context(
+            items=items,
+            parent=self.portal,
+            context=image,
+        )
+
+        # postcondition
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 3)
+
+        self.assertEqual(result[0]["id"], "document_a")
+        self.assertEqual(result[1]["id"], "image_a")
+        self.assertEqual(result[2]["id"], "someotherid")
+
+        expected_data = {
+            "uid": image.UID(),
+            "portal_type": "Image",
+            "id": "image_a",
+            "title": "Image A",
+            "description": "an Image",
+            "url": image.absolute_url(),
+            "is_active": True,
+            "children": [],
+        }
+        self.assertDictEqual(result[1], expected_data)
+
+    def test_contextmenu__insert_active_context__not_in_parent(self):
+        # setup
+        document_a = api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document_a",
+            title="Document A",
+            description="a Document",
+        )
+        image = api.content.create(
+            container=document_a,
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
+        )
+
+        items = [
+            {"id": document_a.id},
+            {"id": "someotherid"},
+        ]
+
+        # do it
+        result = self.service._insert_active_context(
+            items=items,
+            parent=self.portal,
+            context=image,
+        )
+
+        # postcondition
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 2)
+
+        self.assertEqual(result[0]["id"], "document_a")
+        self.assertEqual(result[1]["id"], "someotherid")
+
     def test_contextmenu__get_context_menu_items(self):
         # setup
         document_a = api.content.create(
@@ -386,6 +472,56 @@ class TestContextmenuGet(unittest.TestCase):
             "description": "an Image",
             "url": image.absolute_url(),
             "is_active": False,
+            "children": [],
+        }
+        self.assertDictEqual(result[1], expected_data_b)
+
+    def test_contextmenu__get_context_menu_items__do_not_show_but_context(self):
+        # setup
+        add_contextmenu_behavior(["Image"])
+
+        document_a = api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document_a",
+            title="Document A",
+            description="a Document",
+        )
+        image = api.content.create(
+            container=self.portal,
+            type="Image",
+            id="image_a",
+            title="Image A",
+            description="an Image",
+        )
+
+        # do it
+        result = self.service._get_context_menu_items(self.portal, image)
+
+        # postcondition
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 2)
+
+        expected_data_a = {
+            "uid": document_a.UID(),
+            "portal_type": "Document",
+            "id": "document_a",
+            "title": "Document A",
+            "description": "a Document",
+            "url": document_a.absolute_url(),
+            "is_active": False,
+            "children": [],
+        }
+        self.assertDictEqual(result[0], expected_data_a)
+
+        expected_data_b = {
+            "uid": image.UID(),
+            "portal_type": "Image",
+            "id": "image_a",
+            "title": "Image A",
+            "description": "an Image",
+            "url": image.absolute_url(),
+            "is_active": True,
             "children": [],
         }
         self.assertDictEqual(result[1], expected_data_b)
