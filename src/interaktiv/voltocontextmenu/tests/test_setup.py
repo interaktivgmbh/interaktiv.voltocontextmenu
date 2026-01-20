@@ -8,7 +8,6 @@ from plone.dexterity.interfaces import IDexterityFTI
 # noinspection PyUnresolvedReferences
 from Products.CMFPlone.utils import get_installer
 from zope.component import getUtility
-from zope.interface.interfaces import ComponentLookupError
 
 from interaktiv.voltocontextmenu import DEFAULT_CONTEXTMENU_TYPES
 from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
@@ -43,11 +42,7 @@ class TestSetup(unittest.TestCase):
 
         # postcondition
         for portal_type in DEFAULT_CONTEXTMENU_TYPES:
-            try:
-                fti: DexterityFTI = getUtility(IDexterityFTI, name=portal_type)
-            except ComponentLookupError:
-                continue
-
+            fti: DexterityFTI = getUtility(IDexterityFTI, name=portal_type)
             self.assertIn(contextmenu_behavior, fti.behaviors)
 
     def test_contextmenu_registry_record_created(self):
