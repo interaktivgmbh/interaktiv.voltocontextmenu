@@ -1,8 +1,9 @@
 import sys
 from os import path
 
-from pkg_resources import Requirement, parse_version
-from setuptools import find_packages, setup
+from packaging.specifiers import SpecifierSet
+from packaging.version import Version
+from setuptools import find_namespace_packages, setup
 
 # Package metadata
 NAME = "interaktiv.voltocontextmenu"
@@ -11,7 +12,7 @@ URL = "https://code.interaktiv.de/interaktiv/voltocontextmenu"
 EMAIL = "info@interaktiv.de"
 AUTHOR = "Interaktiv GmbH"
 REQUIRES_PYTHON = "~=3.11"
-VERSION = '1.0.1'
+VERSION = "2.0.0"
 REQUIRES_PLONE_VERSION = "6"
 
 # Additional package requires
@@ -36,8 +37,8 @@ except FileNotFoundError:
 
 # Check required python version
 def check_python_version():
-    required_python = Requirement.parse("python" + REQUIRES_PYTHON)
-    current_version = parse_version(".".join(map(str, sys.version_info[:3])))
+    required_python = SpecifierSet(REQUIRES_PYTHON)
+    current_version = Version(".".join(map(str, sys.version_info[:3])))
     if current_version not in required_python:
         sys.exit(
             f"'{NAME}' requires Python {REQUIRES_PYTHON} but the current Python is {current_version}"
@@ -64,11 +65,8 @@ setup(
     author_email=EMAIL,
     url=URL,
     license="GPL version 2",
-    packages=find_packages("src"),
+    packages=find_namespace_packages("src"),
     package_dir={"": "src"},
-    namespace_packages=[
-        "interaktiv",
-    ],
     include_package_data=True,
     zip_safe=False,
     python_requires=check_python_version(),
