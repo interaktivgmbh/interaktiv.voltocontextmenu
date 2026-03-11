@@ -1,3 +1,5 @@
+from typing import Any
+
 import plone.api as api
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
@@ -49,13 +51,13 @@ class ContextmenuBehavior:
     def __init__(self, context):
         self.context = context
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         if name in ("context",):
             raise AttributeError(name)
         return getattr(self.context, name)
 
     @property
-    def show_in_contextmenu(self):
+    def show_in_contextmenu(self) -> bool:
         raw = getattr(self.context, "show_in_contextmenu", None)
         if raw is not None:
             return raw
@@ -67,5 +69,5 @@ class ContextmenuBehavior:
         return self.context.portal_type in default_shown_types
 
     @show_in_contextmenu.setter
-    def show_in_contextmenu(self, value):
+    def show_in_contextmenu(self, value: bool) -> None:
         self.context.show_in_contextmenu = value
