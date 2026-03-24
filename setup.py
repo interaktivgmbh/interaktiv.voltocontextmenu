@@ -12,7 +12,7 @@ URL = "https://code.interaktiv.de/interaktiv/voltocontextmenu"
 EMAIL = "info@interaktiv.de"
 AUTHOR = "Interaktiv GmbH"
 REQUIRES_PYTHON = "~=3.11"
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 REQUIRES_PLONE_VERSION = "6"
 
 # Additional package requires
