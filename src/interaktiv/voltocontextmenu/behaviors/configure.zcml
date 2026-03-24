@@ -12,7 +12,7 @@
             for="plone.dexterity.interfaces.IDexterityContent"
             factory="interaktiv.voltocontextmenu.behaviors.contextmenu.ContextmenuBehavior"
             provides="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehavior"
-            marker="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehavior"
+            marker="interaktiv.voltocontextmenu.behaviors.contextmenu.IContextmenuBehaviorMarker"
     />
 
 </configure>
