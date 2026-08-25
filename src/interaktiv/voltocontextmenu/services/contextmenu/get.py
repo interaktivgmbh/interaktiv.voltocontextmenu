@@ -78,13 +78,17 @@ class ContextmenuGet(Service):
         }
         return query
 
+    @staticmethod
+    def _search(catalog, query: dict[str, Any]):
+        return catalog(**query)
+
     def _get_children(self, context: DexterityContent) -> list[ContextmenuItemData]:
         children = []
         catalog = api.portal.get_tool("portal_catalog")
 
         query = self._get_query(context)
 
-        for brain in catalog(query):
+        for brain in self._search(catalog, query):
             children.append(self._get_item_data(brain))
 
         return children
@@ -98,7 +102,7 @@ class ContextmenuGet(Service):
         context_found = False
 
         query = self._get_query(parent)
-        for brain in catalog(query):
+        for brain in self._search(catalog, query):
             item_data = self._get_item_data(brain)
 
             if brain.UID == context_uid:

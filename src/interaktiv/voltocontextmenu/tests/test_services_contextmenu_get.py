@@ -1,10 +1,12 @@
 import unittest
+from datetime import datetime, timedelta
 
 import plone.api as api
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, logout, setRoles
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.dexterity.fti import DexterityFTI
 from plone.dexterity.interfaces import IDexterityFTI
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from zope.component import getUtility
 
 from interaktiv.voltocontextmenu.behaviors.contextmenu import IContextmenuBehavior
@@ -602,3 +604,78 @@ class TestContextmenuGet(unittest.TestCase):
             "children": [],
         }
         self.assertDictEqual(contextmenu_items[1], expected_data_b)
+
+    # --------- expired items ---------
+
+    def _create_expired_sibling_setup(self):
+        parent = api.content.create(
+            container=self.portal,
+            type="Document",
+            id="parent",
+            show_contextmenu=True,
+            show_in_contextmenu=True,
+        )
+        active = api.content.create(
+            container=parent,
+            type="Document",
+            id="active",
+            show_contextmenu=True,
+            show_in_contextmenu=True,
+        )
+        expired = api.content.create(
+            container=parent,
+            type="Document",
+            id="expired",
+            show_contextmenu=True,
+            show_in_contextmenu=True,
+        )
+        expired.setExpirationDate(datetime.now() - timedelta(days=1))
+        expired.reindexObject()
+        return parent, active
+
+    def _contextmenu_ids_as(self, username, context):
+        logout()
+        login(self.portal, username)
+        try:
+            service = ContextmenuGet()
+            service.context = context
+            service.request = self.request
+            return sorted(item["id"] for item in service.reply()["items"])
+        finally:
+            logout()
+            login(self.portal, TEST_USER_NAME)
+
+    def test_contextmenu__expired_sibling__hidden_without_inactive_permission(self):
+        # setup: a reader without "Access inactive portal content"
+        parent, active = self._create_expired_sibling_setup()
+        api.user.create(
+            email="reader@example.com", username="reader", password="secret123!"
+        )
+        api.user.grant_roles(username="reader", roles=["Reader"], obj=parent)
+
+        # do it
+        result = self._contextmenu_ids_as("reader", active)
+
+        # postcondition: the catalog's default handling of inactive content applies
+        self.assertEqual(result, ["active"])
+
+    def test_contextmenu__expired_sibling__local_role_with_inactive_permission(self):
+        # setup: permission granted to a role that the user only holds locally on the
+        # parent. The catalog's path-based permission check only sees the path when the
+        # query is passed as keyword arguments — this guards the call style.
+        parent, active = self._create_expired_sibling_setup()
+        self.portal.manage_permission(
+            AccessInactivePortalContent,
+            roles=["Manager", "Site Administrator", "Owner", "Editor"],
+            acquire=True,
+        )
+        api.user.create(
+            email="editor@example.com", username="local_editor", password="secret123!"
+        )
+        api.user.grant_roles(username="local_editor", roles=["Editor"], obj=parent)
+
+        # do it
+        result = self._contextmenu_ids_as("local_editor", active)
+
+        # postcondition
+        self.assertEqual(result, ["active", "expired"])
