@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.3] - 2026-11-26
+
+### Changed
+
+- Changed the visible name from "Contextmenu" to "Context navigation". @arybakov05
+
 ## [2.0.2] - 2026-08-25
 
 ### Fixed

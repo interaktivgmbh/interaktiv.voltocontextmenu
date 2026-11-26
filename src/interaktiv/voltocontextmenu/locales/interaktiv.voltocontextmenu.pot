@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2026-01-15 09:58+0000\n"
+"POT-Creation-Date: 2026-11-26 12:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,43 +37,46 @@ msgstr ""
 msgid "Uninstalls the interaktiv.voltocontextmenu package."
 msgstr ""
 
-#. Default: "Types that are shown in Contextmenu by Default."
+#. Default: "Content of these types appears in the context navigation automatically. This can be changed per item with \"Show in context navigation\"."
 #: ../registry/contextmenu.py:9
 msgid "help_default_portal_types"
 msgstr ""
 
-#. Default: "If selected, the Contextmenu will be rendered for this page"
-#: ../behaviors/contextmenu.py:20
-msgid "help_show_contextmenu"
+#. Default: "If selected, the context navigation will be rendered for this page."
+#: ../behaviors/contextmenu.py:29
+msgid "help_show_contextnavigation"
 msgstr ""
 
-#. Default: "If selected, the item will be listed in Contextmenus"
-#: ../behaviors/contextmenu.py:30
-msgid "help_show_in_contextmenu"
+#. Default: "If selected, the item will be listed in the context navigation."
+#: ../behaviors/contextmenu.py:39
+msgid "help_show_in_contextnavigation"
 msgstr ""
 
-#. Default: "Contextmenu"
-#: ../behaviors/contextmenu.py:14
-msgid "label_contextmenu_fieldset"
+#. Default: "Context navigation"
+#: ../behaviors/contextmenu.py:23
+msgid "label_contextnavigation_fieldset"
 msgstr ""
 
-#. Default: "Contextmenu Default Portal Types"
+#. Default: "Content types in context navigation"
 #: ../registry/contextmenu.py:8
 msgid "label_default_portal_types"
 msgstr ""
 
-#. Default: "Show Contextmenu"
-#: ../behaviors/contextmenu.py:19
-msgid "label_show_contextmenu"
+#. Default: "Show context navigation"
+#: ../behaviors/contextmenu.py:28
+msgid "label_show_contextnavigation"
 msgstr ""
 
-#. Default: "Show In Contextmenu"
-#: ../behaviors/contextmenu.py:29
-msgid "label_show_in_contextmenu"
+#. Default: "Show in context navigation"
+#: ../behaviors/contextmenu.py:38
+msgid "label_show_in_contextnavigation"
 msgstr ""
 
-#. Default: "Contextmenu Settings"
-#: ../controlpanels/contextmenu.py:13
 #: ../profiles/default/controlpanel.xml
 msgid "trans_label_controlpanel_contextmenu_settings"
+msgstr ""
+
+#. Default: "Context navigation"
+#: ../controlpanels/contextmenu.py:13
+msgid "trans_label_controlpanel_contextnavigation_settings"
 msgstr ""

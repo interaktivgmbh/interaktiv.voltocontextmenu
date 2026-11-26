@@ -19,26 +19,28 @@ class IContextmenuBehaviorMarker(IDexterityContent):
 @provider(IFormFieldProvider)
 class IContextmenuBehavior(model.Schema):
     model.fieldset(
-        "contextmenu",
-        label=_("label_contextmenu_fieldset", default="Contextmenu"),
+        "contextnavigation",
+        label=_("label_contextnavigation_fieldset", default="Context navigation"),
         fields=("show_contextmenu", "show_in_contextmenu"),
     )
 
     show_contextmenu = schema.Bool(
-        title=_("label_show_contextmenu", default="Show Contextmenu"),
+        title=_("label_show_contextnavigation", default="Show context navigation"),
         description=_(
-            "help_show_contextmenu",
-            default="If selected, the Contextmenu will be rendered for this page",
+            "help_show_contextnavigation",
+            default="If selected, the context navigation will be rendered for this page.",
         ),
         default=True,
         required=False,
     )
 
     show_in_contextmenu = schema.Bool(
-        title=_("label_show_in_contextmenu", default="Show In Contextmenu"),
+        title=_(
+            "label_show_in_contextnavigation", default="Show in context navigation"
+        ),
         description=_(
-            "help_show_in_contextmenu",
-            default="If selected, the item will be listed in Contextmenus",
+            "help_show_in_contextnavigation",
+            default="If selected, the item will be listed in the context navigation.",
         ),
         required=False,
     )
